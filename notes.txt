@@ -6,3 +6,11 @@ Mode Sass version 6.0.1 is incompatible with ^4.0.0 || ^5.0.0.
 2. Add "sass-loader": "^11.1.1" as web_Dependency in package.json
 3. Delete node_modules and yarn.lock
 4. yarn
+
+import SectionsData from './directory.data.json'
+
+En el constructor:
+this.state = {
+	sections: SectionsData
+}
+
