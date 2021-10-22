@@ -1,0 +1,8 @@
+> yarn add node-sass
+> yarn start
+
+Mode Sass version 6.0.1 is incompatible with ^4.0.0 || ^5.0.0.
+1. yarn remove node-sass
+2. Add "sass-loader": "^11.1.1" as web_Dependency in package.json
+3. Delete node_modules and yarn.lock
+4. yarn
