@@ -14,3 +14,7 @@ this.state = {
 	sections: SectionsData
 }
 
+https://fonts.google.com/specimen/Open+Sans+Condensed?query=condensed
+vas a index.html y agregas el
+
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&display=swap" rel="stylesheet">
