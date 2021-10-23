@@ -18,3 +18,28 @@ https://fonts.google.com/specimen/Open+Sans+Condensed?query=condensed
 vas a index.html y agregas el
 
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&display=swap" rel="stylesheet">
+
+React Router
+
+yarn add react-router-dom
+
+Si hay conflictos, se puede agregar
+
+"devDependencies": {
+},
+
+"resolutions": {
+    "babel-jest": "24.7.1" (o similar)
+}
+
+props.match.params.topicId (leer parametros de la url)
+
+Avoid property drilling... (pasar las prop a multiples hijos que no los usan)
+
+import {withRouter} from 'react-router-dom'
+export default withRouter(MenuItem);
+
+Destructuring and spread
+collections.map( ({id, ...otherProps}) => (
+	<CollectionPreview key={id} {...otherProps} />
+))
