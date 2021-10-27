@@ -43,3 +43,76 @@ Destructuring and spread
 collections.map( ({id, ...otherProps}) => (
 	<CollectionPreview key={id} {...otherProps} />
 ))
+
+Usar una imagen como un elemento de react
+import { ReactComponent as Logo } from '../../assets/crown.svg'
+<Logo />
+
+Cuando haces una funcion con => arreglas el this. Para que sea del contexto de la clase cuando haces 
+this.setState
+
+ALT + Click: Agregas un segundo cursor en VS code
+
+*** Firebase
+Crear el proyecto en https://console.firebase.google.com/
+Ir a agregar a proyecto web (Proyect Overview / Web)
+copiar el objeto con la configuracion de firebase
+> yarn add firebase 
+
+Para poner un atributo true, no es necesario hacer ={true} con <CustomButton isGoogleSignin es suficiente
+<CustomButton isGoogleSignin onClick={signInWithGoogle}>Sign in with Google</CustomButton>
+
+Cuando ponemos &. en sas equivale a .custom-button.google-sign-in 
+
+class="custom-button google-sign-in"
+
+.custom-button {
+    &.google-sign-in {
+        background-color: #4285f4;
+    }
+}
+
+Cuando usamso @mixin en SAS es para reutilizra codigo
+
+@mixin shrinkLabel {
+  top: -14px;
+  font-size: 12px;
+  color: $main-color;
+}
+
+&.shrink {
+	@include shrinkLabel();
+}
+
+FireStore
+Production Mode (privada nadie puede escribir ni leer solo por reglas) vs Test Mode (cualquiera puede leer y escribir)
+QueryReference - Objecto de la colleccion que represento. (auque no existe)
+QuerySnapshot  -  Haciendo get() de la reference se obtienen los datos. Crud se hace con snapshot.
+
+En v9
+Hay que buscar una referencia doc o collection
+const userRef = doc(db, `users/${userAuth.uid}`);
+
+y luego guardarla con setDoc o setCollection
+await setDoc(userRef, data);
+
+Te subscribis a los cambios con onSnapshot
+
+onSnapshot(userRef, doc => {
+	this.setState({
+	currentUser: {
+		id: doc.id,
+		...doc.data()
+	}
+});
+
+Para usar await, la funcion debe estar declarada con async
+
+    handleSubmit = async e => {
+        e.preventDefault();
+        await createUserProfileWithEmailAndPassword(this.state);
+        this.setState({ email: '', password: '', displayName: '', confirmPassword: '' });
+    }
+
+https://ant.design/components/table/
+
