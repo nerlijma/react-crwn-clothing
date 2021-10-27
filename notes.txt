@@ -115,4 +115,10 @@ Para usar await, la funcion debe estar declarada con async
     }
 
 https://ant.design/components/table/
+http://flexboxfroggy.com/
+
+Solo para el caso de google, si te logueas con usuario y password, y luego con google. 
+Te pisa la autenticación de usuario y contraseña. No pasa al reves.
+Si queres tener google y email y contraseña tenes que estar logueado y linkear con otro proveedor
+https://firebase.google.com/docs/auth/web/account-linking
 

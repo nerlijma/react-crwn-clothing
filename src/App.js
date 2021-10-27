@@ -24,6 +24,8 @@ class App extends React.Component {
   componentDidMount() {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
+        console.log('onAuthStateChanged', userAuth.email, userAuth.currentUser);
+
         const userRef = await createUserProfileDocument(userAuth);
         onSnapshot(userRef, doc => {
           this.setState({
@@ -32,7 +34,10 @@ class App extends React.Component {
               ...doc.data()
             }
           });
-        })
+        });
+
+        // if (userAuth.metadata.createdAt === userAuth.metadata.lastLoginAt) {
+
       } else {
         this.setState({
           currentUser: null
@@ -48,7 +53,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <p>{this.state.currentUser?.email}</p>
+        <p>{this.state.currentUser?.email}{this.state.currentUser?.displayName}</p>
         {this.state.currentUser && (<div onClick={x => auth.signOut()}>Signout</div>)}
         <BrowserRouter>
           <Header currentUser={this.state.currentUser} />

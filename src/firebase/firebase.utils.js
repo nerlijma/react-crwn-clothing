@@ -1,6 +1,6 @@
-import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import { onSnapshot, getFirestore, doc, setDoc, updateDoc } from "firebase/firestore";
+import { onSnapshot, getFirestore, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCfg6ClOSKefjbMUoi0Optf6qGGhLMM4sc",
@@ -46,20 +46,25 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
     // v9
     const userRef = doc(db, `users/${userAuth.uid}`);
-    const { displayName, email } = userAuth;
-    const createdAt = new Date();
+    const docSnap = await getDoc(userRef);
 
-    const data = {
-        displayName,
-        email,
-        createdAt,
-        ...additionalData
-    };
+    if (!docSnap.exists()) {
+        // If user does not exists, create the user document
+        const { displayName, email } = userAuth;
+        const createdAt = new Date();
 
-    try {
-        await setDoc(userRef, data);
-    } catch (error) {
-        console.log('error creating user', error.message);
+        const data = {
+            displayName,
+            email,
+            createdAt,
+            ...additionalData
+        };
+
+        try {
+            await setDoc(userRef, data);
+        } catch (error) {
+            console.log('error creating user', error.message);
+        }
     }
 
     return userRef;
@@ -88,7 +93,23 @@ export const createUserProfileWithEmailAndPassword = async (email, password, dis
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
-            updateUserProfileDocument(user, { displayName: displayName })
+            updateProfile(user, { displayName: displayName }).then(() => {
+            });
+            return user;
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(`errorCode ${errorCode} message: ${errorMessage}`);
+            return null;
+        });
+}
+
+export const signInUserWithEmailAndPassword = async (email, password) => {
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log('user logged', userCredential.user);
             return user;
         })
         .catch((error) => {
