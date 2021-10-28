@@ -122,3 +122,14 @@ Te pisa la autenticación de usuario y contraseña. No pasa al reves.
 Si queres tener google y email y contraseña tenes que estar logueado y linkear con otro proveedor
 https://firebase.google.com/docs/auth/web/account-linking
 
+Redux
+- Single source of truth
+- One way dataflow
+- State is red only (inmutability) Se crea siempre un nuevo estato
+- Changes using pure functions
+
+Action -> Reducer (pure function) -> Store updated -> DOM Changes
+
+
+- 
+
