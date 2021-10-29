@@ -127,9 +127,51 @@ Redux
 - One way dataflow
 - State is red only (inmutability) Se crea siempre un nuevo estato
 - Changes using pure functions
+- Evita pasar props entre hijos que no se usan
+- Hay un reducer para cada modulo
 
 Action -> Reducer (pure function) -> Store updated -> DOM Changes
 
+EN el reducer siempre se retorna un nuevo objeto
 
-- 
+switch (action.type)  {
+case 'SET_CURRENT_USER':
+	return {
+		...currentState,
+		currentUser: action.payload
+	}
+default:
+	return currentState;
+}
 
+Hay middelwares que ejecutan antes de llegar al reducer. Ej Logger
+
+> yarn add redux redux-logger react-redux
+
+reducer/root-reducer.js contiene todos los reducers de los modulos. user-reducer.jsx etc.
+
+Se combinan en uno solo en el root-reduer.js
+
+export default combineReducers({
+    user: userReducer
+});
+
+** Leer estado Redux
+Hay que mapear el state to props
+
+const mapStateToProps = state => ({
+    currentUser: state.user.currentUser
+})
+
+export default connect(mapStateToProps)(Header);
+
+** Dispatch Actions Redux
+Para llamar a una action, hay que mepearla a una funcion disponible en props.
+
+para luego llamarla: this.props.setCurrentUser o setCurrentUser() si haces  un destruct de this.props
+
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+})
+
+export default connect(null, mapDispatchToProps)(App);
