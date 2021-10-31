@@ -182,3 +182,12 @@ La forma mas similar a ngIf*:
 
 Los function components siepre reciben props de parametro. Si haces destruct va siempre con {}
 y puede ser atributo, objecto o funcion de Redux. Ej {item, setItem, etc}
+
+Spread array [...array, {new Item}] - Agrega un item al array
+Spread obj {...obj, prop}           - AGrega una prop al obj
+
+Hacer destruct aniaddo
+Si paso props, y adentro tiene item puedo hacer 
+{item: {name, imageUrl, quantity}} 
+
+Debugger: hay que buscar el lunch.json y cambiar la url para que sea la misma.
