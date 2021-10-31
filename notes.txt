@@ -157,7 +157,7 @@ export default combineReducers({
 });
 
 ** Leer estado Redux
-Hay que mapear el state to props
+Hay que mapear el state to props en cada componente
 
 const mapStateToProps = state => ({
     currentUser: state.user.currentUser
@@ -175,3 +175,10 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(null, mapDispatchToProps)(App);
+
+La forma mas similar a ngIf*:
+
+{(visible) && <CartDropdown />}
+
+Los function components siepre reciben props de parametro. Si haces destruct va siempre con {}
+y puede ser atributo, objecto o funcion de Redux. Ej {item, setItem, etc}
