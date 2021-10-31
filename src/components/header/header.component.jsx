@@ -5,6 +5,9 @@ import { ReactComponent as Logo } from '../../assets/crown.svg'
 import { auth } from '../../firebase/firebase.utils'
 import CartDropdown from '../cart-dropdown/cart-dropdown.component'
 import CartIcon from '../cart-icon/cart-icon.component'
+import { createStructuredSelector } from 'reselect';
+import { selectCartVisible } from '../../redux/cart/cart.selectors'
+import { selectCurrentUser } from '../../redux/user/user.selectors'
 
 import './header.styles.scss'
 
@@ -40,9 +43,9 @@ const Header = ({ currentUser, visible }) => {
     )
 }
 
-const mapStateToProps = state => ({
-    currentUser: state.user.currentUser,
-    visible: state.cart.visible
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    visible: selectCartVisible
 })
 
 export default connect(

@@ -190,4 +190,14 @@ Hacer destruct aniaddo
 Si paso props, y adentro tiene item puedo hacer 
 {item: {name, imageUrl, quantity}} 
 
-Debugger: hay que buscar el lunch.json y cambiar la url para que sea la misma.
+Debugger: hay que buscar el launch.json y cambiar la url para que sea la misma.
+
+*** redux selectors. Mapeas a props una funcion.
+const mapStateToProps = ({ cart: { cartItems } }) => ({
+    itemCount: cartItems.reduce((acc, cartItem) => acc + cartItem.quantity, 0)
+})
+
+El problema que tienen es que se llaman cada vez que cambia el state, aunque no cambie cartItems
+Se soluciona con reusable selectors: reselect
+
+> yarn add reselect
