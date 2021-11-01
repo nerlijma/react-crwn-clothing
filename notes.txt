@@ -189,9 +189,11 @@ y puede ser atributo, objecto o funcion de Redux. Ej {item, setItem, etc}
 Spread array [...array, {new Item}] - Agrega un item al array
 Spread obj {...obj, prop}           - AGrega una prop al obj
 
-Hacer destruct aniaddo
+Hacer destruct anidado
 Si paso props, y adentro tiene item puedo hacer 
 {item: {name, imageUrl, quantity}} 
+El problema de hacer destruct anidado, es que ya no tenes acceso al item. Solo a las props que destructuraste.
+Si se necesita acceso al item, hay que dejar item y hacer const {name, imageUrl, quantity} = item; para usarla.
 
 Debugger: hay que buscar el launch.json y cambiar la url para que sea la misma.
 
@@ -224,4 +226,8 @@ por lo tanto podes llamar a un action haciendo
 import { setToogleVisibility } from '../../redux/cart/cart.actions'
 dispatch(setToogleVisibility());
 
+Html Digbats
+https://www.w3schools.com/charsets/ref_utf_dingbats.asp
 
+Para filtrar un item por Id de un array, lo mejor es usar filter. Te devuelve un nuevo array sin el item.
+array.filtar(item=>item.id !== itemToRemove.id)
