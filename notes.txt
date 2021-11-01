@@ -36,8 +36,11 @@ props.match.params.topicId (leer parametros de la url)
 
 Avoid property drilling... (pasar las prop a multiples hijos que no los usan)
 
+Para tener acceso al history, y hacer history.push.
 import {withRouter} from 'react-router-dom'
 export default withRouter(MenuItem);
+
+Push te navega a una url. onClick={() => history.push(`${match.url}${linkUrl}`)}
 
 Destructuring and spread
 collections.map( ({id, ...otherProps}) => (
@@ -200,4 +203,25 @@ const mapStateToProps = ({ cart: { cartItems } }) => ({
 El problema que tienen es que se llaman cada vez que cambia el state, aunque no cambie cartItems
 Se soluciona con reusable selectors: reselect
 
+Se crea una porcion del state con cart.selectors.js
+
 > yarn add reselect
+
+Para escribir menos codigo y evitar pasar el staet se puede user el 
+
+import { createStructuredSelector } from 'reselect';
+
+const mapStateToProps = createStructuredSelector({
+    cartItems: selectCartItems
+})
+
+En connect, sin o mapeas mapDispatchToProps, se injecta igual el dispath object
+
+Ej: const CartDropdown = ({ cartItems, history, dispatch }) => (
+
+por lo tanto podes llamar a un action haciendo
+
+import { setToogleVisibility } from '../../redux/cart/cart.actions'
+dispatch(setToogleVisibility());
+
+
