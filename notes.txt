@@ -231,3 +231,49 @@ https://www.w3schools.com/charsets/ref_utf_dingbats.asp
 
 Para filtrar un item por Id de un array, lo mejor es usar filter. Te devuelve un nuevo array sin el item.
 array.filtar(item=>item.id !== itemToRemove.id)
+
+
+*** Persistance
+
+> yarn add redux-persist
+
+Hay que modificar store.js y agregar persistStore
+
+import { persistStore } from 'redux-persist';
+
+const store = createStore(rootReducer, applyMiddleware(...middlewares));
+const persistor = persistStore(store);
+
+Se exporta el store y tambien el persistor
+export default {store, persistor};   
+
+En root-reducer.js
+import storage from 'redux-persist/lib/storage'
+const persistConfig = {
+    key: root,
+    storage,
+    whitelist: ['cart']
+}
+
+const rootReducer = combineReducers({
+    user: userReducer,
+    cart: cartReducer
+});
+
+export default persistReducer(persistConfig, rootReducer);
+
+y en index.js hay que wrappear app
+
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './redux/store';
+
+<PersistGate persistor={persistor}>
+  <App />
+</PersistGate>
+
+
+
+
+
+
+
