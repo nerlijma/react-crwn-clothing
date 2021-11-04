@@ -276,5 +276,18 @@ import { store, persistor } from './redux/store';
 Plugin: Paste Json to code
 
 * Nested Routes
- 
+
+Las rutas pueden ir en cualquier componente, tambien con su switch en caso que solo renderizar una
+ <Switch>
+	<Route exact path={`${match.path}`} component={CollectionsOverview} />
+	<Route path={`${match.path}/:collectionId`} component={CollectionPage} /> 
+ </Switch>	
+
+Cuando se pone :collectionId, va de parametro en la ruta hacia el componente.
+
 match.params.CollectionId acceso al parametro. Si esta dentro de un route, podes injectar match
+
+* Payments with stripe
+
+
+
