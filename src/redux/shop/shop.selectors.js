@@ -8,3 +8,8 @@ export const selectCollections = createSelector(
     (shop) => shop.collections
 );
 
+export const selectCollection = collectionId => createSelector(
+    [selectCollections],
+    (collections) => collections[collectionId]
+);
+

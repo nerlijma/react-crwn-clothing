@@ -276,11 +276,5 @@ import { store, persistor } from './redux/store';
 Plugin: Paste Json to code
 
 * Nested Routes
-
-
-
-
-
-
-
-
+ 
+match.params.CollectionId acceso al parametro. Si esta dentro de un route, podes injectar match

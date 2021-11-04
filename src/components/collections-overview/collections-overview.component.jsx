@@ -6,17 +6,21 @@ import { createStructuredSelector } from 'reselect';
 
 import './collections-overview.styles.scss'
 
-const CollectionsOverview = ({ collections }) => (
-    <div className='collections-overview'>
-        <div>Collections</div>
-        {
-            collections.map(({ id, ...otherProps }) => (
-                <CollectionPreview key={id} {...otherProps} />
-            ))
-
-        }
-    </div>
-)
+const CollectionsOverview = ({ collections }) => {
+    return (
+        <div className='collections-overview'>
+            <div>Collections</div>
+            {
+                Object.keys(collections).map((key) => {
+                    const item = collections[key];
+                    return (
+                        <CollectionPreview key={item.id} {...item} />
+                    )
+                })
+            }
+        </div>
+    );
+}
 
 const mapStateToProps = createStructuredSelector({
     collections: selectCollections
