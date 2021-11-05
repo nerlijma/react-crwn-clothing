@@ -294,3 +294,21 @@ match.params.CollectionId acceso al parametro. Si esta dentro de un route, podes
 Download heruku cli
 https://devcenter.heroku.com/articles/heroku-cli#download-and-install
 
+Instructions_
+https://github.com/mars/create-react-app-buildpack
+
+> heroku login
+> heroku create crwn-live-nerlijma --buildpack mars/create-react-app
+> git push heroku master
+> heroku open
+https://crwn-live-nerlijma.herokuapp.com/ deployed to Heroku
+
+No funciona la autencacion con google firebase pq el dominio no esta agregado.
+
+Quitar los logs de redux logger en prod.
+
+en store.js, solo agrego el logger si es development
+
+if (process.env.NODE_ENV === 'development') {
+    middlewares.push(logger);
+}
