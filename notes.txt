@@ -288,6 +288,9 @@ Cuando se pone :collectionId, va de parametro en la ruta hacia el componente.
 match.params.CollectionId acceso al parametro. Si esta dentro de un route, podes injectar match
 
 * Payments with stripe
+> yarn add react-stripe-checkout
 
-
+* Host In Heruku
+Download heruku cli
+https://devcenter.heroku.com/articles/heroku-cli#download-and-install
 
