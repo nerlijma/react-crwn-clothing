@@ -67,6 +67,13 @@ copiar el objeto con la configuracion de firebase
 Para poner un atributo true, no es necesario hacer ={true} con <CustomButton isGoogleSignin es suficiente
 <CustomButton isGoogleSignin onClick={signInWithGoogle}>Sign in with Google</CustomButton>
 
+const CustomButton = ({ children, inverted, isGoogleSignin, ...otherProps }) => (
+    <button className={`${inverted ? 'inverted' : isGoogleSignin ? 'google-sign-in' : ''} custom-button`}
+        {...otherProps}>
+        {children}
+    </button>
+)
+
 Cuando ponemos &. en sas equivale a .custom-button.google-sign-in 
 
 class="custom-button google-sign-in"
@@ -312,3 +319,73 @@ en store.js, solo agrego el logger si es development
 if (process.env.NODE_ENV === 'development') {
     middlewares.push(logger);
 }
+
+** Styled Templates.
+
+> yarn add styled-components
+Componentes con estilos asi no pasa el problema de pisarse css entre componentes
+
+header.styles.jsx
+
+import styled, { css } from 'styled-components';
+import { Link } from 'react-router-dom';
+
+- Estilos de div
+export const HeaderContainer = styled.div`
+    height: 70px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+`
+
+- Estilos heredando de Link
+export const LogoContainer = styled(Link)`
+    height: 100%;
+    width: 70px;
+    padding: 25px;
+`;
+
+- Reutilizar estilos
+const OptionContainerStyles = css`
+    padding: 10px 15px;
+    cursor: pointer;
+`
+
+export const OptionDiv = styled.div`
+    ${OptionContainerStyles}
+`
+Para reutilizar tambien se puede usar <optionLink as='div'
+y asi no necesitas 2 componenetes.
+
+Se puede hacer una funcion para determinar estilos dinamicos
+
+const getButtonStyles = props => {
+    if (props.isGoogleSignin) {
+        return googleButtonStyles;
+    }
+
+    return props.inverted ? invertedButtonStyles : buttonStyles;
+};
+
+Y se incluye con string interpolation 
+
+export const CustomButtonContainer = styled.button`
+    min-width: 165px;
+    width: auto;
+    height: 50px;
+    letter-spacing: 0.5px;
+	
+    ${getButtonStyles}
+`;
+
+Para que funcione hay que pasar las props al componente
+
+const CustomButton = ({ children, ...props }) => (
+    <CustomButtonContainer {...props}>{children}</CustomButtonContainer>
+)
+
+** Firestore Query and Snapshots, and rules
+
+
+

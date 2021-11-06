@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { ReactComponent as Logo } from '../../assets/crown.svg'
 import { auth } from '../../firebase/firebase.utils'
 import CartDropdown from '../cart-dropdown/cart-dropdown.component'
@@ -8,38 +7,39 @@ import CartIcon from '../cart-icon/cart-icon.component'
 import { createStructuredSelector } from 'reselect';
 import { selectCartVisible } from '../../redux/cart/cart.selectors'
 import { selectCurrentUser } from '../../redux/user/user.selectors'
+import { HeaderContainer, LogoContainer, OptionsContainer, OptionDiv, OptionLink } from './header.styles'
 
-import './header.styles.scss'
+// import './header.styles.scss'
 
 const Header = ({ currentUser, visible }) => {
 
     return (
 
-        <div className='header'>
-            <Link className='logo-container' to='/'>
+        <HeaderContainer>
+            <LogoContainer to='/'>
                 <Logo className='logo' />
-            </Link>
-            <div className='options'>
-                <Link className='option' to='/shop'>
+            </LogoContainer>
+            <OptionsContainer>
+                <OptionLink to='/shop'>
                     SHOP
-                </Link>
-                <Link className='option' to='/contact'>
+                </OptionLink>
+                <OptionLink to='/contact'>
                     CONTACT
-                </Link>
+                </OptionLink>
                 {
                     currentUser ?
-                        <div className='option' onClick={() => auth.signOut()}>SIGN OUT</div>
+                        <OptionDiv onClick={() => auth.signOut()}>SIGN OUT</OptionDiv>
                         :
-                        <Link className='option' to='/sign-in'>
+                        <OptionLink to='/sign-in'>
                             SIGN IN
-                        </Link>
+                        </OptionLink>
                 }
                 <CartIcon />
-            </div>
+            </OptionsContainer>
 
             {(visible) && <CartDropdown />}
 
-        </div>
+        </HeaderContainer>
     )
 }
 
