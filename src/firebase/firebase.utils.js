@@ -7,6 +7,7 @@ import {
     collection,
     setDoc,
     getDoc,
+    getDocs,
     updateDoc,
     writeBatch
 } from "firebase/firestore";
@@ -166,6 +167,8 @@ export const convertCollectionSnapshotToMap = collectionsSnapshot => {
 }
 
 export const getCollections = () => collection(db, "collections");
+
+export const getCollectionsSnapshot = () => getDocs(collection(db, "collections"));
 
 // export const getShopCollections = () => {
 //     const col = collection(db, "collections");

@@ -118,6 +118,17 @@ onSnapshot(userRef, doc => {
 	}
 });
 
+* Ejemplo onSnapshopt para subscribirte a cambios real time
+componentDidMount() {
+	const { updateCollections } = this.props;
+	const collectionsRef = getCollections();
+	this.collectionSnapshotListener = onSnapshot(collectionsRef, (collSnapshot) => {
+		const collectionsMap = convertCollectionSnapshotToMap(collSnapshot);
+		updateCollections(collectionsMap);
+		this.setState({ loading: false });
+	});
+}
+
 Para usar await, la funcion debe estar declarada con async
 
     handleSubmit = async e => {
@@ -494,8 +505,94 @@ JsRx.
 
 *** redux-thunk
 > yarn add redux-thunk
-Fire functions in reduc
+Fire functions in redux async
 
+Para instalarlo en store.js
+import thunk from 'redux-thunk';
+
+let middlewares = [thunk];
+
+if (process.env.NODE_ENV === 'development') {
+    middlewares.push(logger);
+}
+
+1. Crear los types para la accion asyncronica. ej. 
+
+export const ShopActionTypes = {
+    'FETCH_COLLECTIONS_START': 'FETCH_COLLECTIONS_START',
+    'FETCH_COLLECTIONS_SUCCESS': 'FETCH_COLLECTIONS_SUCCESS',
+    'FETCH_COLLECTIONS_FAILURE': 'FETCH_COLLECTIONS_FAILURE'
+}
+
+2. Modificar el estado (reducer) para cada accion
+   case ShopActionTypes.FETCH_COLLECTIONS_START:
+            return {
+                ...state,
+                isFetching: true
+            }
+
+        case ShopActionTypes.FETCH_COLLECTIONS_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                collections: action.payload
+            }
+
+        case ShopActionTypes.FETCH_COLLECTIONS_FAILURE:
+            return {
+                ...state,
+                isFetching: true,
+                errorMessage: action.payload
+            }
+
+3. Crear las acciones. La mas importante es la async, que al tener redux-thunk en vez de 
+las actions ser funciones que retornan objetos, 
+retorna una dispach function (dispach) => {}
+
+Si retorna un objeto, el middleware de thunk lo ignora, si es funcion lo intercepta y lo ejecuta.
+
+export const fetchCollectionsStartAsync = () => {
+    return dispatch => {
+        dispatch(fetchCollectionsStart());
+        const collectionsRef = getCollections();
+
+        collectionsRef
+            .get()
+            .then(collSnapshot => {
+                const collectionsMap = convertCollectionSnapshotToMap(collSnapshot);
+                dispatch(fetchCollectionsSuccess(collectionsMap));
+            })
+            .catch(error => dispatch(fetchCollectionsFailure(error.message)))
+    }
+};
+
+Si quisiera poner axios, seria
+
+export const fetchStartAsync = () => {
+    return dispatch => {
+        dispatch(fetchCollectionsStart());
+        axios.get(url)
+			.then((response) => dispatch(fetchCollectionsSuccess(response.data))
+			.catch((response) => dispatch(fetchCollectionsFailure(response.error)))
+    }
+};
+
+
+NOTA: Render de componentes.
+El componentDidMount se dispara luego que se renderiza el coponente. Para el caso del spinner
+como el fech es en componentDidMount la logica sería.
+isFetching = false
+render Shop
+  render Collections (renderiza anulo con el if (collections) return null  
+shop.componentDidMount  
+  fechCollections --> isFetching = true
+Se actualiza el Collections component pq cambio el estado de isFetching
+isFetching = false
+
+NOTA: Parece mejor tener un select para cuando la collection es null y no isFetching. 
+Si es null, nunca debería renderizar el componente y poner spinner.
+
+render={(props) => <CollectionsOverviewWithSpinner isLoading={!isCollectionsLoaded} {...props} />}
 
 NOTA: operador !! va a dar true si el obj tiene algo. Si es 0, null, undefined, '' da false.
 
@@ -503,13 +600,14 @@ NOTA: operador !! va a dar true si el obj tiene algo. Si es 0, null, undefined, 
 1. crear el archivo en el root del proyecto: jsconfig.json
 
 resolveJsonModule: permite agregar modulos en archivos .json
+checkJs: valida errores de javascript (false por defecto)
 
 {
     "compilerOptions": {
         "module": "commonjs",
         "target": "es2016",
         "jsx": "preserve",
-        "checkJs": true,
+        "checkJs": false,
         "baseUrl": "./src",
         "resolveJsonModule": true
     },
@@ -526,6 +624,7 @@ import DIRECTORY_DATA from 'components/directory/directory.data.json';
 
 4. yarn start y ver si hay errores
 
+** Container Pattern
 
 
  
