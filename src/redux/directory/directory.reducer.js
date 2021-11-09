@@ -1,4 +1,4 @@
-import DIRECTORY_DATA from '../../components/directory/directory.data.json';
+import DIRECTORY_DATA from 'components/directory/directory.data.json';
 
 const INITIAL_STATE = {
     sections: DIRECTORY_DATA

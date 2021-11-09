@@ -1,6 +1,15 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import { onSnapshot, getFirestore, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import {
+    onSnapshot,
+    getFirestore,
+    doc,
+    collection,
+    setDoc,
+    getDoc,
+    updateDoc,
+    writeBatch
+} from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCfg6ClOSKefjbMUoi0Optf6qGGhLMM4sc",
@@ -15,11 +24,12 @@ const app = initializeApp(firebaseConfig);
 
 const provider = new GoogleAuthProvider();
 export const auth = getAuth(app);
-// export const auth = firebase.auth();
-// export const firestore = firebase.firestore();
+
+export { onSnapshot };
 
 // const provider = new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
+
 export const signInWithGoogle = () => signInWithPopup(auth, provider).then((result) => {
     // This gives you a Google Access Token. You can use it to access the Google API.
     // const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -120,4 +130,62 @@ export const signInUserWithEmailAndPassword = async (email, password) => {
         });
 }
 
-export { onSnapshot };
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    try {
+        const batch = writeBatch(db);
+        objectsToAdd.forEach(item => {
+            const newDocRef = doc(collection(db, collectionKey), item.title);
+            batch.set(newDocRef, item);
+        });
+
+        await batch.commit();
+
+    } catch (error) {
+        console.log(error);
+    }
+
+    return null;
+}
+
+export const convertCollectionSnapshotToMap = collectionsSnapshot => {
+    const arr = collectionsSnapshot.docs.map(doc => {
+        const { title, items } = doc.data();
+
+        return {
+            id: doc.id,
+            routeName: encodeURI(title.toLowerCase()),
+            title,
+            items
+        }
+    });
+
+    return arr.reduce((acc, collection) => {
+        acc[collection.id.toLowerCase()] = collection;
+        return acc;
+    }, {});
+}
+
+export const getCollections = () => collection(db, "collections");
+
+// export const getShopCollections = () => {
+//     const col = collection(db, "collections");
+
+//     const unsubscribe = onSnapshot(col, (collSnapshot) => {
+
+//         const arr = collSnapshot.docs.map(doc => {
+//             const { title, items } = doc.data();
+
+//             return {
+//                 id: doc.id,
+//                 routeName: encodeURI(title.toLowerCase()),
+//                 title,
+//                 items
+//             }
+//         });
+
+
+//     });
+// }
+
+
+

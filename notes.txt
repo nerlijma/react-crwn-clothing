@@ -19,7 +19,7 @@ vas a index.html y agregas el
 
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&display=swap" rel="stylesheet">
 
-React Router
+** React Router
 
 yarn add react-router-dom
 
@@ -385,7 +385,147 @@ const CustomButton = ({ children, ...props }) => (
     <CustomButtonContainer {...props}>{children}</CustomButtonContainer>
 )
 
+En el styled component podes recibir una propiedad como funcion
+background-image: ${({ imageUrl }) => `url(${imageUrl})`};
+
+A veces en el componente se pueden dejar claseName para hacer referencia luego en el hover.
+
+&:hover {
+	.image {
+		opacity: 0.8;
+	}
+
+	button {
+		opacity: 0.85;
+		display: flex;
+	}
+}
+
+<CollectionImage className='image' imageUrl={imageUrl} /> 
+	
+
 ** Firestore Query and Snapshots, and rules
+Agregar en batch
+
+const batch = writeBatch(db);
+const newDocRef = doc(collection(db, collectionKey), item.title); Si no le paso title te genera un id automatico
+batch.set(newDocRef, item);
+await batch.commit();
+
+Reduce en arrays() para transformar un arry de objectos[] en un objeto {} se usa reduce
+Va iterando el array y modificando el mismo objecto que se inicializa con {}
+
+arr.reduce((acc, collection) => {
+	acc[collection.id.toLowerCase()] = collection;
+	return acc;
+}, {})
+
+Ejemplos de reduce()
+
+A) Contar los elementos de un array con reduce:
+arr.reduce((acc, item) => { 
+    acc[item] = (acc[item] || 0) + 1
+    return  acc;
+} , {})
+
+B) 2 dim array en -> 1 dim array
+const twoDArr = [ [1,2], [3,4], [5,6], [7,8] , [9,10] ];
+
+const oneDArr = twoDArr.reduce((acu, current) => {
+    console.log(`acu: ${acu}, current:${current}`);
+    return acu.concat(current);
+}, []);
+
+React class components
+En un componente de clase, para no hacer contructor y setear el state, para hacerlos mas liviano se puede hacer
+
+state = {
+	loading: true
+};
+
+Y no se necesita el contructor.
+
+*** HOC High Order Component Pattern
+Es el decorator pattern. Se obtiene un componente nuevo enriquecido.
+Es un functional component que recibe otro como parametro y lo retorna enriquecido. 
+O sea que devuelve un componente.
+
+const WithSpinner = WrappedComponent => {
+    const Spinner = ({ isLoading, ...otherProps }) => {
+        return isLoading ? (
+            <SpinnerOverlay>
+                <SpinnerContainer />
+            </SpinnerOverlay>
+        ) : (
+            <WrappedComponent {...otherProps} />
+        )
+    };
+
+    return Spinner;
+};
+
+export default WithSpinner;
+
+y se llama como: 
+
+const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
+
+y en router:
+
+<Route exact
+	path={`${match.path}`}
+	render={(props) => <CollectionsOverviewWithSpinner isLoading={loading} {...props} />}
+
+Sin router seria:
+
+<CollectionsOverviewWithSpinner isLoading={loading} {...this.props} />
+Props son las props que ya tiene el componente. history, location, match si es un componente llamado en una ruta.
+
+IMPORTANTE: Cuando se hace destruct con spread no importa el nombre de la variable
+const Spinner = ({ ...pepe }) 
+pepe contiene todas las variables pasadas por parametro
+Si no es spread si importa el nombre, se espera la variable con el nombre que pasaste.
+{isLoading, ...pepe} isLoading importa, pepe no.
+
+*** Observable pattern
+Te subscribis a un stream de eventos que ocurren.
+Te subscribis (funcion, error function)y luego siempre hay que unsuscribe.
+JsRx.
+
+*** redux-thunk
+> yarn add redux-thunk
+Fire functions in reduc
+
+
+NOTA: operador !! va a dar true si el obj tiene algo. Si es 0, null, undefined, '' da false.
+
+*** Absolute paths
+1. crear el archivo en el root del proyecto: jsconfig.json
+
+resolveJsonModule: permite agregar modulos en archivos .json
+
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2016",
+        "jsx": "preserve",
+        "checkJs": true,
+        "baseUrl": "./src",
+        "resolveJsonModule": true
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}
+
+2. Reiniciar VS code
+3. Poner un path absoluto 
+
+import DIRECTORY_DATA from 'components/directory/directory.data.json';
+
+4. yarn start y ver si hay errores
 
 
 
+ 

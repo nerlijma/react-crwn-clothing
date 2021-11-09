@@ -13,6 +13,7 @@ import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from './redux/user/user.selectors';
 import CheckoutPage from './pages/checkout/checkout.component';
 
+
 class App extends React.Component {
 
   unsubscribeFromAuth = null;
@@ -37,6 +38,12 @@ class App extends React.Component {
         setCurrentUser(null);
       }
     });
+
+    // Only to add collection items to Firestore
+    // const collectionsArray = selectCollectionsAsArray;
+    // const array = collectionsArray.map(({ title, items }) => ({ title, items }));
+    // addCollectionAndDocuments('collections', array)
+
   }
 
   componentWillUnmount() {
