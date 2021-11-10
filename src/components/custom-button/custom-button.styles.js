@@ -35,10 +35,12 @@ const invertedButtonStyles = css`
 const googleButtonStyles = css`
     background-color: #4285f4;
     color: white;
+    border: 1px solid black;
 
     &:hover {
         background-color: #357ae8;
-        border: none;
+        opacity: .7;
+        border: 1px solid black;
     }
 `;
 

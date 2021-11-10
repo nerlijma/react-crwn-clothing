@@ -2,7 +2,7 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { fetchCollectionsStartAsync } from '../../redux/shop/shop.actions';
+import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
 import { selectIsFetching, selectIsCollectionsLoaded } from 'redux/shop/shop.selectors'
 import { Switch, Route } from 'react-router-dom';
 
@@ -18,8 +18,13 @@ class ShopPage extends React.Component {
 
     componentDidMount() {
         console.log('componentDidMount fired');
-        const { fetchCollectionsStartAsync } = this.props;
-        fetchCollectionsStartAsync();
+        const { fetchCollectionsStart } = this.props;
+
+        // Para thunk
+        // fetchCollectionsStartAsync();
+
+        // Para saga
+        fetchCollectionsStart();
     }
 
     componentWillUnmount() {
@@ -56,7 +61,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-    fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync())
+    fetchCollectionsStart: () => dispatch(fetchCollectionsStart())
 })
 
 

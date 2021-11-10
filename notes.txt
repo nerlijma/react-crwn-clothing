@@ -625,6 +625,107 @@ import DIRECTORY_DATA from 'components/directory/directory.data.json';
 4. yarn start y ver si hay errores
 
 ** Container Pattern
+Se crean container components, que pasan propiedades al componente que contienen. no renderizan nada
+Ej. Collection.container.jsx
 
+import {compose} from 'redux';
 
+const mapStateToProps = createStructuredSelector({
+    isLoading: (state) => !selectIsCollectionsLoaded(state)
+});
+
+const CollectionPageContainer = compose(
+    connect(mapStateToProps),
+    WithSpinner
+)(CollectionPage);
+
+export default CollectionPageContainer;
+
+** Sagas
+> yarn add redux-saga
+
+Side effect: API calls async to backend.
+Impure Reactions: Si llamo a la funcion con parametros iguales me puede dar resultados diferentes.
+
+Todo lo que sea impuro, debe estar en una Saga.
+
+Generator functions: 
+Funciones que podes pausar la ejecución, y la proxima se ejecuta cuando haces next()
+
+function* gen(i) {
+	yield i:
+	yield i+ 10;
+	return 25;
+}
+
+let g = gen(5);
+g.next();  // value: 5, done:false
+g.next(); // value: 15  done:false
+g.next(); // value: 25 done:true
+
+Configuracion
+
+store.js
+
+import createSagaMiddleware from 'redux-saga';
+import {fetchCollectionsStart} from './shop/shop.sagas'
+
+const sagaMiddleware = createSagaMiddleware();
+const middlewares = [sagaMiddleware];
+
+const store = createStore(rootReducer, applyMiddleware(...middlewares));
+sagaMiddleware.run(fetchCollectionsStart); // debe ser despuede de createStore
+
+shop.sagas.js
+
+Error: Actions must be plain objects. Instead, the actual type was: ''. You may need to add middleware to your store setup to handle dispatching other values, 
+such as 'redux-thunk' to handle dispatching functions
+
+En el shop.component, siempre se hace referncia a las shop.actions (y no shop.sagas)
+
+En la generator function de abajo, cada vez que de hace dispatch de FETCH_COLLECTIONS_START, 
+se llama al worker  fetchCollectionsAsync (que es otra generator function)
+export function* fetchCollectionsStart() {
+    yield takeEvery(
+        ShopActionTypes.FETCH_COLLECTIONS_START,
+        fetchCollectionsAsync
+    )
+}
+
+yield call - Llama a una funcion
+yield put - Para hacer dispatch e una accion
+
+const collectionsMap = yield call(convertCollectionSnapshotToMap, collectionsSnapshot);
+yield put(fetchCollectionsSuccess(collectionsMap));
+
+OJO: put va con el llamado a la funcion, no va con comma. Comma es CALL
+
+takeLatest vs takeEvery - Si llamo muchas veces takeLatest se queda con únicamente el ultimo llamado
+
+* Root Saga. Para no hacer MiddleWare.run para cada saga
+root.saga.js
+
+import { all, call } from 'redux-saga/effects';
+import { fetchCollectionsStart } from 'redux/shop/shop.sagas';
+
+export default function* rootSaga() {
+    // Inicializa todas las sagas en paralelo
+    yield all([
+        call(fetchCollectionsStart)
+    ]);
+}
  
+Se importa en store.js
+
+import rootSaga from './root-saga';
+sagaMiddleware.run(rootSaga);
+
+En funcion de la saga, siempre se recibe:
+
+// Recibe {payload: {obj de payload}, action: ''}
+export function* EmailSignIn({ payload: { email, password } }) {
+
+Las generator functions se pueden refactorear para no duplicar codigo. 
+Siempre siendo una generator function con yield, put, set, etc.
+
+

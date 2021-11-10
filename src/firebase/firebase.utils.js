@@ -23,15 +23,17 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const provider = new GoogleAuthProvider();
+export const googleProvider = new GoogleAuthProvider();
 export const auth = getAuth(app);
 
 export { onSnapshot };
 
-// const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({ prompt: 'select_account' });
+export { signInWithPopup, signInWithEmailAndPassword };
 
-export const signInWithGoogle = () => signInWithPopup(auth, provider).then((result) => {
+// const provider = new firebase.auth.GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: 'select_account' });
+
+export const signInWithGoogle = () => signInWithPopup(auth, googleProvider).then((result) => {
     // This gives you a Google Access Token. You can use it to access the Google API.
     // const credential = GoogleAuthProvider.credentialFromResult(result);
     // const token = credential.accessToken;
@@ -53,6 +55,7 @@ export const signInWithGoogle = () => signInWithPopup(auth, provider).then((resu
 const db = getFirestore();
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
+
     if (!userAuth) return;
 
     // v9
@@ -78,7 +81,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         }
     }
 
-    return userRef;
+    return docSnap;
 }
 
 export const updateUserProfileDocument = async (userAuth, additionalData) => {
