@@ -728,4 +728,14 @@ export function* EmailSignIn({ payload: { email, password } }) {
 Las generator functions se pueden refactorear para no duplicar codigo. 
 Siempre siendo una generator function con yield, put, set, etc.
 
+Las sagas es bueno ponerlas como onAction, ya que estamos escuchando a la funcion.
+
+* implementas isUserAuthenticated saga con Promise.
+
+
+NOTA:
+TypeError: Cannot read properties of null (reading 'redirectPersistenceManager') at signOut (http://localhost:3
+
+Verificar que en la saga se este llamando bien a los metodos. Ej le faltaba parenthesis a:
+        yield auth.signOut();
 

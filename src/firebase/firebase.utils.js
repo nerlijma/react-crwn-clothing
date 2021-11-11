@@ -173,6 +173,16 @@ export const getCollections = () => collection(db, "collections");
 
 export const getCollectionsSnapshot = () => getDocs(collection(db, "collections"));
 
+
+export const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const unsubscribeFromAuth = auth.onAuthStateChanged(userAuth => {
+            unsubscribeFromAuth();
+            resolve(userAuth);
+        }, reject)
+    });
+}
+
 // export const getShopCollections = () => {
 //     const col = collection(db, "collections");
 
