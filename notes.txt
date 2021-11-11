@@ -42,6 +42,11 @@ export default withRouter(MenuItem);
 
 Push te navega a una url. onClick={() => history.push(`${match.url}${linkUrl}`)}
 
+Como mostrar una pagina condicional? ej Si esta logueado o no. on Route render, te permite tener una
+funcion en vez de un componente.
+
+<Route exact path='/sign-in' render={() => currentUser ? (<Redirect to='/' />) : (<SignInAndSignUp />)} />
+
 Destructuring and spread
 collections.map( ({id, ...otherProps}) => (
 	<CollectionPreview key={id} {...otherProps} />
@@ -738,4 +743,5 @@ TypeError: Cannot read properties of null (reading 'redirectPersistenceManager')
 
 Verificar que en la saga se este llamando bien a los metodos. Ej le faltaba parenthesis a:
         yield auth.signOut();
+
 

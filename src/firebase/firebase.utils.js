@@ -28,7 +28,7 @@ export const auth = getAuth(app);
 
 export { onSnapshot };
 
-export { signInWithPopup, signInWithEmailAndPassword };
+export { signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile };
 
 // const provider = new firebase.auth.GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: 'select_account' });
@@ -55,12 +55,11 @@ export const signInWithGoogle = () => signInWithPopup(auth, googleProvider).then
 const db = getFirestore();
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
-
     if (!userAuth) return;
 
     // v9
     const userRef = doc(db, `users/${userAuth.uid}`);
-    const docSnap = await getDoc(userRef);
+    let docSnap = await getDoc(userRef);
 
     if (!docSnap.exists()) {
         // If user does not exists, create the user document
@@ -76,6 +75,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
         try {
             await setDoc(userRef, data);
+            docSnap = await getDoc(userRef);
         } catch (error) {
             console.log('error creating user', error.message);
         }
