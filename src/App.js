@@ -16,8 +16,6 @@ import CheckoutPage from './pages/checkout/checkout.component';
 
 class App extends React.Component {
 
-  unsubscribeFromAuth = null;
-
   componentDidMount() {
     const { checkUserSession } = this.props;
 
@@ -50,7 +48,7 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
-    this.unsubscribeFromAuth();
+    // this.unsubscribeFromAuth();
   }
 
   render() {
