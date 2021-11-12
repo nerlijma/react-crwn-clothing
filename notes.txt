@@ -744,4 +744,39 @@ TypeError: Cannot read properties of null (reading 'redirectPersistenceManager')
 Verificar que en la saga se este llamando bien a los metodos. Ej le faltaba parenthesis a:
         yield auth.signOut();
 
+**** HOOKS
+const [name, setName] = useState('default value');
+const [address, setAddress] = useState('default value');
+
+Convertir Clase a funcion con useState
+a. const SignIn = (dispachFunctionsComoProps) =>
+b. import React {useState} from 'react'
+c. const [userCredentials, setUserCredentials] = useState({displayName: '',email: '',password: '',confirmPassword: ''});
+d. Restruct de las props para usalas
+const { displayName, email, password, confirmPassword } = userCredentials;
+e. ponerle const a las funciones y sacar render
+f. usar setUserCredentials ...
+setUserCredentials({ ...userCredentials, [name]: value });
+
+*** useEffect
+useEffect(() => {
+	fetchCollectionsStart();
+}, [fetchCollectionsStart]);
+Si pones el array vacio te da un warning... es igual que [] ya que la funcion no cambia.
+
+useEffect se llama cada vez que las props cambian, o si se llama al setState o si el padre se renderiza.
+
+En useEffect podes retornal una cleanup function. Es igual que componentWillUnmount (dispara cuando dejas la pagina)
+useEffect(()=> {
+	return () => {
+		console.log('unmount');
+	}
+},[]);
+ 
+
+
+
+
+
+
 
