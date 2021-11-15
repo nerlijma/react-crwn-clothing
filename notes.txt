@@ -817,7 +817,7 @@ useDispatch lo podes usar en cualquier parte del function component.
 
 const dispatch = useDispatch();
 
-dispatch(checkUserSession()); // checkUserSession es un action
+const checkUserSession = () => dispatch(checkUserSession()); // checkUserSession es un action
 
 Si se pone:
 
