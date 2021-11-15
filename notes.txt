@@ -829,7 +829,9 @@ useEffect(() => {
   dispatch(checkUserSession();
 }, [dispatch]});
 
-
+** useParams and useHistory
+import {useParams, useHistory} from 'react-router-dom';
+const history = useHistory ();
 
 
 
