@@ -766,17 +766,74 @@ Si pones el array vacio te da un warning... es igual que [] ya que la funcion no
 
 useEffect se llama cada vez que las props cambian, o si se llama al setState o si el padre se renderiza.
 
-En useEffect podes retornal una cleanup function. Es igual que componentWillUnmount (dispara cuando dejas la pagina)
+En useEffect podes retornal una cleanup function. Es igual que componentWillUnmount 
+(dispara cuando dejas la pagina)
+
 useEffect(()=> {
 	return () => {
 		console.log('unmount');
 	}
 },[]);
+
+** Custom Hooks (effects)
+use-fetch.effect.js
+Haces una funcion 
+
+const useFetch = (url)  => {
+	const [data, setData] = useState(null);
+	useEffect(() => {
+		const fetchData = async () => {
+			const res = await fetch(url);
+			const dataArray = await res.json();
+			setData(dataArray[0])
+		};
+	 
+		fetchData();
+	});
+   
+	return data;
+}
+
+y se llama en un componente 
+
+const post = useFetch(url);
+
+** useReducer
+Aca no puse nada
+
+connect se reemplaza por useSelector, useDispatch de 'react-redux'
+A partir de la version react-redux 7.1
+
+> yarn upgrade react-redux --latest
+
+Hay que remover, connect que no se usa mas.
+const currentUser = useSelector(selectCurrentUser);
+
+// Cuando no tenes un selector      
+const isHidden = useSelector((state) => state.cart.hidden);
+
+** useDispatch
+useDispatch lo podes usar en cualquier parte del function component.
+
+const dispatch = useDispatch();
+
+dispatch(checkUserSession()); // checkUserSession es un action
+
+Si se pone:
+
+const checkUserSessionHandler = () => dispach(checkUserSession()); Esta es una anonymous function que se
+redefine en cada ernder, por lo tanto, si esta dentro del useEffect se va a disparar siempre que se haga 
+el render y solo 1 vez. Para que no pase se pone asi: (pq dispatch no cambia)
+
+useEffect(() => {
+  dispatch(checkUserSession();
+}, [dispatch]});
+
+
+
+
+
+
+
+
  
-
-
-
-
-
-
-
