@@ -314,11 +314,14 @@ Cuando se pone :collectionId, va de parametro en la ruta hacia el componente.
 match.params.CollectionId acceso al parametro. Si esta dentro de un route, podes injectar match
 
 * Payments with stripe
+
+https://dashboard.stripe.com/login
+
 > yarn add react-stripe-checkout
 
 * Host In Heruku
 Download heruku cli
-https://devcenter.heroku.com/articles/heroku-cli#download-and-install
+https://devcentedr.heroku.com/articles/heroku-cli#download-and-install
 
 Instructions_
 https://github.com/mars/create-react-app-buildpack
@@ -338,6 +341,16 @@ en store.js, solo agrego el logger si es development
 if (process.env.NODE_ENV === 'development') {
     middlewares.push(logger);
 }
+
+> heroku apps // Te dice el nombre de la app linkeada
+> heroku git:remote -a crwn-live-nerlijma // Linkea este proyecto a el git remoto de heroku
+> git push heroku master 
+> heroku buildpacks // Lista los buildpacks mars/create-react-app
+> heroku buildpacks:remove mars/create-react-app
+> git add -A
+> git commit -m "separate our app into client and express server"
+> git push heroku master
+
 
 ** Styled Templates.
 
@@ -886,3 +899,34 @@ Al ponerlo en useLayoutEffect, no hay flicker porque nunca se renderizo el DOM.
 useLayoutEffect es bloqueante. useLayout no es bloqueante.
 
 *** NODE Server
+*** NODE Server
+> npm i -g nodemon
+
+Se agrega engines en package.json y pones las versiones de node y npm
+  "engines": {
+	"node": "16.11.1",
+	"npm": "8.1.0"
+  }
+  
+Stripe secret key. Vas al dashboard, test mode.  Secret Key / Reveal Secret Key. Copi.
+Y la pones en .env 
+STRIPE_SECRET_KEY=sk_test_51JsCzQK9ynoDN3946lOmJOUzJ8ktM3pTqkcELLj4z5bf5QtmPOEDZYacS4IF0a4kLTeEq9e82V2djOiDsCGUXx8m001vi8Gwid
+
+En .gitignore se puede agregar .env para no enviar el secret a github
+
+Se agrega en package.json 
+
+"private"...
+"proxy": "http: //localhost:5000",
+
+si las url son incompletas, ej /shop, te las completa con esa url.
+
+> yarn dev
+> npm run dev
+> yarn add axios
+
+import axios from 'axios';
+
+Credit card info
+4242 4242 4242 4242
+01/24 123
