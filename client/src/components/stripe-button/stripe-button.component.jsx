@@ -12,7 +12,7 @@ const StripeButton = ({ price }) => {
         console.log('new token: 2', token);
         axios({
             url: 'payment',
-            method: 'post',
+            method: 'get',
             data: {
                 amount: priceForStripe,
                 token
