@@ -361,6 +361,10 @@ Como accede heroku a los private varables?
 NOTA: Si estoy en un branch, para pushear de mi local (no master) a heruku master.
 git push heroku features/express-server:master --force
 
+TROUBLESHOOT Heroku.
+Me daba error de coflicto con webpack. saas-loader versus la que ya viene.
+Tuve que bajar saas-loader a una menor y se soluciono.
+
 ** Styled Templates.
 
 > yarn add styled-components
