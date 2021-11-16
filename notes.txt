@@ -1,3 +1,6 @@
+wireframe tool
+https://whimsical.com
+
 > yarn add node-sass
 > yarn start
 
@@ -801,6 +804,7 @@ const post = useFetch(url);
 ** useReducer
 Aca no puse nada
 
+import { useDispatch, useSelector } from 'react-redux';
 connect se reemplaza por useSelector, useDispatch de 'react-redux'
 A partir de la version react-redux 7.1
 
@@ -831,11 +835,54 @@ useEffect(() => {
 
 ** useParams and useHistory
 import {useParams, useHistory} from 'react-router-dom';
-const history = useHistory ();
+const history = useHistory();
 
+const { collectionId } = useParams();
 
+NOTA: Funcional component RE RENDER cuando cambia state o props.
+Los functional components se ejecutan de arriba hacia abajo.
+Si tenes una funcion definida, se sobreescribe cada vez, por lo tanto el useEffect siempre se ejecuta.
+Aunque la pongas en array de dependencias.
 
+const consoleMessage = () => console.log('hola');
 
+para solucionarlo o lo pones dentro del useEffect, lo pones afuera del componente.
+Lo mejor es ponerlo dentro del useEffect y pones las dependecias necesarias dentro del array. 
+Si no tiene ninguna dependencia, lo pones fuera del componente.
 
+*** useCallback
+import {useState, useEffect, useCallback} from 'react';
 
- 
+const myFunc = useCallback(() => {
+	console.log('effect run' + test1);
+}, [test1]);
+
+useEffect(() => {
+	myFunc();
+}, [myFunc]);
+Define una funcion que solo va a cambiar segun las dependencias. Sino no redefine la funcion.
+
+** useMemo
+
+import {useState, useEffect, useCallback, useMemo} from 'react';
+Igual a useCallback pero para objetos. Recibe una callback funcion que retorna un objeto.
+
+const myObj = useMemo(() => ({
+	a: 'my value of a is ' + test1
+}), [test1]);
+
+*** useLayoutEffect
+useLayoutEffect Ejecuta antes que este pronto el DOM.
+const ourDiv = useRef(); // No cambia entre renders
+
+useLayoutEffect(() => {
+	console.log('useLayoutEffect');
+	ourDiv.current.style.backgroundColor = 'red';
+}, [ourDiv])
+
+<div id="my-div" ref={ourDiv} />
+
+Al ponerlo en useLayoutEffect, no hay flicker porque nunca se renderizo el DOM.
+useLayoutEffect es bloqueante. useLayout no es bloqueante.
+
+*** NODE Server
