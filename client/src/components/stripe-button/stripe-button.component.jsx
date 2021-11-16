@@ -9,6 +9,7 @@ const StripeButton = ({ price }) => {
     const pusheableKey = 'pk_test_51JsCzQK9ynoDN394dQOZUJ5FP9Uwq5OeZFXTCWytheU6GZSPTw3tDy43zCCSlhPwuipPQKov2u0I462sAP0pFJpN008mMq0jlM';
 
     const onToken = (token) => {
+        console.log('new token:', token);
         axios({
             url: 'payment',
             method: 'post',

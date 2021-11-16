@@ -349,7 +349,10 @@ if (process.env.NODE_ENV === 'development') {
 > heroku buildpacks:remove mars/create-react-app
 > git add -A
 > git commit -m "separate our app into client and express server"
-> git push heroku master
+> git push heroku master // Si le pones --force te sobrescribe todo
+Como accede heroku a los private varables?
+> heroku config:set STRIPE_SECRET_KEY=sk_test_51JsCzQK9ynoDN3946lOmJOUzJ8ktM3pTqkcELLj4z5bf5QtmPOEDZYacS4IF0a4kLTeEq9e82V2djOiDsCGUXx8m001vi8Gwid
+> heroku open // Te abre el browser automatico en la url de heroku
 
 
 ** Styled Templates.
