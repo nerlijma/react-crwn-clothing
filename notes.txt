@@ -943,3 +943,33 @@ import axios from 'axios';
 Credit card info
 4242 4242 4242 4242
 01/24 123
+
+*** Context API
+Es de react. 
+Elimina prop drilling issue
+
+Se crea una carpeta context/collections
+import {createContext} from 'react';
+
+const CollectionContext = createContext(SHOP_DATA); // Puede ser cualquier objeto...
+
+export default CollectionContext; (se exporta el contexto como un componente)
+
+Se usa como componente con el Consumer. Lo pones en la parte que quieras usar el context.
+
+<CollectionContext.Consumer>
+ {collections => {
+	const collection = collections[match.params.collectionId];
+	const {title, items} = collection;
+ }}
+</CollectionContext.Consumer>
+
+La forma facil:
+
+import React, {useContext} from 'react';
+
+const collections = useContext(CollectionContext);
+
+
+
+
