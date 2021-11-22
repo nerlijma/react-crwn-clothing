@@ -946,7 +946,21 @@ Credit card info
 
 *** Context API
 Es de react. 
-Elimina prop drilling issue
+Elimina prop drilling issue.
+En resumen
+1. se define un context con un state object  
+(que puede tener cualquier cosa, incluso funciones ej empty function addItem: ()=>{})
+2. El estado de ese conexte debe vivir en el padre con useState. Y eso se pasa a los hijos para que lo usen.
+3. Se pasa con CartContext.Provider (englobando a los hijos que queres que tengan acceso al context)
+, haciendo referencia a las props y func del estado.
+
+<CartContext.Provider value={{
+          hidden,
+          toggleHidden
+}}>
+
+4. Se lee en el hijo obteniendo referncia al obj context
+const collections = useContext(CollectionContext);
 
 Se crea una carpeta context/collections
 import {createContext} from 'react';
@@ -964,11 +978,119 @@ Se usa como componente con el Consumer. Lo pones en la parte que quieras usar el
  }}
 </CollectionContext.Consumer>
 
-La forma facil:
+La forma facil para consumir sin componente:
 
 import React, {useContext} from 'react';
 
 const collections = useContext(CollectionContext);
+
+** Ejemplo de Contexto en Cart.
+
+NOTA: Cuando me baje la version vieja no anduvo. Creo por la version de node y npm.
+Puse el package.json que se creo cuando se creo la app react y anduvo bien.
+
+PASO 1: se crea un cart.context.js en folder contexts
+
+cart.context.js
+
+import {createContext} from 'react';
+
+const CartContext = createContext({
+	hidden: true,
+	toggleHidden: () => {}
+});
+
+export default CartContext;
+
+PASO 2: En el padre se define el objeto del context y de wrapea el componente pasando el objeto.
+cart.component.jsx
+
+import CartContext from '../../context/cart/cart.context';
+
+const [hidden, setHidden] = useState(true);
+const toggleHidden = () => setHidden(!hidden);
+
+        <CartContext.Provider value={{
+          hidden,
+          toggleHidden
+        }}>
+			<CartIcon />
+        </CartContext.Provider>
+  
+
+PASO 3: Usar context en hijo cart-icon.jsx
+
+import React, {useContext} from 'react';
+import CartContext from '../../contexts/cart.context';
+
+const { toggleHidden } = useContext(CartContext);
+
+<div className='cart-icon' onClick={toggleHidden}>
+
+*** Provider Context Pattern
+Se crea un provider que tiene CartContext (props y metodos) y CartProvider (maneja el estado del context
+y define la implementacion de las funciones). Esto equivale a las actions y state en reducer.
+
+completar 
+
+
+DESVENTAJAS DE CONTEXT API. No hay sagas, no hay store.
+
+*** Ejemplo con Fetch function async
+
+async function getUsers() {
+	let response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+	return await response.json();
+}
+let users = await getUsers(); // Sino pones await te devuelve una promesa que se cumple al tiempo.
+
+Resolver la promesa en el momento (fetch siempre devuelve una promesa, no se puede asignar al resultado)
+
+let resultado = null;
+fetch('https://jsonplaceholder.typicode.com/todos/1')
+	.then(response => response.json())
+	.then(json => {
+		resultado = json;
+		console.log(resultado);
+	});
+
+
+**** GraphQL
+> yarn add apollo-boost react-apollo graphql
+FALTA COMPLETAR
+
+**** Firebase Rules
+https://console.firebase.google.com/u/0/project/crwn-db-aa2ef/firestore/rules
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if
+          request.time < timestamp.date(2021, 11, 25);
+    }
+  }
+}
+
+Solo poder ver los documentos del usuario logueado.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read: if
+      request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
+
+Se puede probar en el simulator (abajo) donde pones el doc a consutar. Autenticacion custom 
+y pones el Mismo userId que queres consultar.
+
+/documents/users/GxRI3YzCLxQ28uxqjl9qxNxPcnh2
+
+
+
+
 
 
 
