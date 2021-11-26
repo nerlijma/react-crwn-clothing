@@ -5,8 +5,6 @@ import { fetchCollectionsFailure, fetchCollectionsSuccess } from './shop.actions
 
 export function* fetchCollectionsAsync() {
     try {
-        yield console.log('i am fired');
-
         const collectionsSnapshot = yield getCollectionsSnapshot();
         const collectionsMap = yield call(convertCollectionSnapshotToMap, collectionsSnapshot);
         yield put(fetchCollectionsSuccess(collectionsMap));

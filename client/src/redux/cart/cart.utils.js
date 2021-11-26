@@ -37,3 +37,24 @@ export const removeItemFromCart = (cartItems, cartItemToRemove) => {
 
     return items;
 }
+
+// // Methods with Firebase integration
+// export const addItemToCartWithDb = (cartItems, userCartItems) => {
+//     debugger;
+//     const existingItem = cartItems.find(item => item.id === userCartItems.id);
+
+//     let items = [];
+//     if (existingItem) {
+//         items = cartItems.map(item => {
+//             if (item.id === userCartItems.id) {
+//                 return { ...item, quantity: item.quantity + 1 };
+//             } else {
+//                 return item;
+//             }
+//         })
+//     } else {
+//         // If does not exits, return same array with new value with quantity = 1
+//         items = [...cartItems, { ...userCartItems, quantity: 1 }];
+//     }
+//     return items;
+// }

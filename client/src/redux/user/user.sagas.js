@@ -37,7 +37,7 @@ export function* emailSignIn({ payload: { email, password } }) {
     }
 }
 
-// creates user in database and sign in the user
+// creates user in database (if does not exists) and signs in the user
 export function* googleAndEmailSignIn(user, additionalData) {
     try {
         const userSnapshot = yield call(createUserProfileDocument, user, additionalData);

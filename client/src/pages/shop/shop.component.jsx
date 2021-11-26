@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
 import { selectIsFetching, selectIsCollectionsLoaded } from 'redux/shop/shop.selectors'
 import { Switch, Route } from 'react-router-dom';
+import Spinner from 'components/spinner/spinner.component';
 
 import CollectionsOverview from '../../components/collections-overview/collections-overview.component';
 // import CollectionPage from '../collection/collection.component';
-import CollectionPageContainer from 'pages/collection/collection.container';
+// import CollectionPageContainer from 'pages/collection/collection.container';
 import WithSpinner from 'components/with-spinner/with-spinner.component';
 
 const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
 // const CollectionPageWithSpinner = WithSpinner(CollectionPage);
+
+
+const CollectionPageContainer = lazy(() => import('pages/collection/collection.container'));
 
 class ShopPage extends React.Component {
 
@@ -43,10 +47,12 @@ class ShopPage extends React.Component {
                         path={`${match.path}`}
                         render={(props) => <CollectionsOverviewWithSpinner isLoading={!isCollectionsLoaded} {...props} />}
                     />
-                    <Route
-                        path={`${match.path}/:collectionId`}
-                        component={CollectionPageContainer}
-                    />
+                    <Suspense fallback={<Spinner />}>
+                        <Route
+                            path={`${match.path}/:collectionId`}
+                            component={CollectionPageContainer}
+                        />
+                    </Suspense>
                 </Switch>
             </div>
         )

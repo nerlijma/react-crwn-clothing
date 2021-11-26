@@ -430,7 +430,7 @@ const CustomButton = ({ children, ...props }) => (
     <CustomButtonContainer {...props}>{children}</CustomButtonContainer>
 )
 
-En el styled component podes recibir una propiedad como funcion
+En el styled component podes recibir una propiedad como funcion dentro de ${}
 background-image: ${({ imageUrl }) => `url(${imageUrl})`};
 
 A veces en el componente se pueden dejar claseName para hacer referencia luego en el hover.
@@ -831,7 +831,7 @@ const post = useFetch(url);
 Aca no puse nada
 
 import { useDispatch, useSelector } from 'react-redux';
-connect se reemplaza por useSelector, useDispatch de 'react-redux'
+connect se reemplaza por useSelector y useDispatch de 'react-redux'
 A partir de la version react-redux 7.1
 
 > yarn upgrade react-redux --latest
@@ -852,7 +852,7 @@ const checkUserSession = () => dispatch(checkUserSession()); // checkUserSession
 Si se pone:
 
 const checkUserSessionHandler = () => dispach(checkUserSession()); Esta es una anonymous function que se
-redefine en cada ernder, por lo tanto, si esta dentro del useEffect se va a disparar siempre que se haga 
+redefine en cada render, por lo tanto, si esta dentro del useEffect se va a disparar siempre que se haga 
 el render y solo 1 vez. Para que no pase se pone asi: (pq dispatch no cambia)
 
 useEffect(() => {
@@ -1074,10 +1074,11 @@ service cloud.firestore {
 
 Solo poder ver los documentos del usuario logueado.
 
+rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /users/{userId} {
-      allow read: if
+    match /users/{userId} { 
+      allow read, create, update: if
       request.auth != null && request.auth.uid == userId;
     }
   }
@@ -1088,10 +1089,80 @@ y pones el Mismo userId que queres consultar.
 
 /documents/users/GxRI3YzCLxQ28uxqjl9qxNxPcnh2
 
+Para las collections lo que se hace es que solo el usuario admin pueda hacerlo (buscas tu email y sacas
+el uid)
 
+match /colleccions/{collection} {
+	allow read;
+	allow write: if request.auth != null && request.auth.uid == "mi user id";
+}
 
+**** Lazy Loading with router
+import React, {lazy, Suspense} from 'react';
 
+Se hace una const con el componente cargado con lazy (acepta funcion que retorna import)
 
+const HomePage = lazy(() => import ('./homepage/homepage.component'));
 
+y luego se emvuelve a la ruta con Suspense. 
+
+<Suspense fallback={<div>loading</div>}>
+	<Route exact path='/' component={HomePage} />
+</Suspense>
+
+Se recomienda solo a los route components. O a alguno que se vea que sea pesado.
+
+**** Error Boundries 
+
+https://www.kapwing.com/404-illustrations
+
+Se crea un componente error Boundary para mostrar cuando hay error en el tree.
+Se pueden tener varios error boundary components para cada caso.
+
+<ErrorBoundary>
+	<Suspense fallback={<Spinner />}>
+	<Route exact path='/' component={HomePage} />
+	<Route path='/shop' component={ShopPage} />
+	<Route exact path='/checkout' component={CheckoutPage} />
+	<Route exact path='/sign-in' render={() => currentUser ? (<Redirect to='/' />) : (<SignInAndSignUp />)} />
+	</Suspense>
+</ErrorBoundary>
+
+**** UNIT TEST
+Va en carpeta test, y hay que inicializarlo para que sea un project independiente.
+npm init -y
+test.js
+> npm install --save-dev jest (only for development)
+En scripts solo debe invocar a jest
+
+JAVASCRIPT:
+array.slice(0,3) retorna los primeros 3 (de 0 a 3 sin incluirlo)
+array.slice(1) retorna del 1 en adelante (arranca en 0)
+array.slice(-1) Del ultimo, solo 1.
+array.slice(-2) Los ultimos 2
+
+se exporta con module.exports = googleSearch;
+se importa const googleSearch = require('./script');
+
+> npm test
+
+it('silly test'. () => {
+	expect('hello').toBe('hello'); // toBe es si es el mismo objecto en memoria
+	expect('hello').toEqual('hello'); // toEqual es si el valor (recursivo) de los objetos es el mismo.
+});
+
+describe, sirve para agrupar tests logicamente
+
+describe('descripcion del grupo',() => {
+	aca todos los it('')...
+});
+
+NOTA: https://swapi.dev/ Api de Star Wars
+
+> npm install node-fetch (no estamos en browser, por eso hay que usar una lib de node)
+
+const fetch = require('node-fetch');
+
+*** Test components with Enzyme
 
 

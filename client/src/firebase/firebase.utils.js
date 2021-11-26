@@ -8,6 +8,7 @@ import {
     setDoc,
     getDoc,
     getDocs,
+    deleteDoc,
     updateDoc,
     writeBatch
 } from "firebase/firestore";
@@ -181,6 +182,79 @@ export const getCurrentUser = () => {
             resolve(userAuth);
         }, reject)
     });
+}
+
+export const createUserCartItem = async (user, item) => {
+    if (!user) return;
+
+    // Busco el item id en el cart
+    const ref = doc(db, `users/${user.id}/cart/${item.id}`);
+    let docSnap = await getDoc(ref);
+
+    if (!docSnap.exists()) {
+        // If user does not exists, create the user document
+        const itemToInsert = Object.assign(item, { 'quantity': 1 });
+        try {
+            await setDoc(ref, itemToInsert);
+            docSnap = await getDoc(ref);
+        } catch (error) {
+            console.log('error creating cart item', error.message);
+        }
+    } else {
+        const docData = docSnap.data();
+        const itemToUpdate = Object.assign(docData, { 'quantity': docData.quantity + 1 });
+        try {
+            await updateDoc(ref, itemToUpdate);
+            docSnap = await getDoc(ref);
+        } catch (error) {
+            console.log('error creating cart item', error.message);
+        }
+    }
+
+    return docSnap.data();
+}
+
+export const removeUserCartItem = async (user, item) => {
+    if (!user) return;
+
+    // Busco el item id en el cart
+    const ref = doc(db, `users/${user.id}/cart/${item.id}`);
+    let docSnap = await getDoc(ref);
+
+    if (docSnap.exists()) {
+        const docData = docSnap.data();
+        if (docData.quantity === 1) return;
+
+        const itemToUpdate = Object.assign(docData, { 'quantity': docData.quantity - 1 });
+        try {
+            await updateDoc(ref, itemToUpdate);
+            docSnap = await getDoc(ref);
+        } catch (error) {
+            console.log('error creating cart item', error.message);
+            throw error;
+        }
+    }
+
+    return docSnap.data();
+}
+
+export const clearUserCartItem = async (user, item) => {
+    if (!user) return;
+
+    // Busco el item id en el cart
+    const ref = doc(db, `users/${user.id}/cart/${item.id}`);
+    let docSnap = await getDoc(ref);
+
+    if (docSnap.exists()) {
+        await deleteDoc(ref);
+    }
+}
+
+
+export const getCartItems = async (user) => {
+    if (!user) return;
+    const cartSnapshot = await getDocs(collection(db, `users/${user.id}/cart/`));
+    return cartSnapshot.docs.map(doc => doc.data());
 }
 
 // export const getShopCollections = () => {

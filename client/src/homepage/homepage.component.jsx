@@ -3,10 +3,13 @@ import { HomePageContainer } from './homepage.styles';
 
 // simport './homepage.styles.scss'
 
-const HomePage = () => (
-    <HomePageContainer>
-        <Directory />
-    </HomePageContainer>
-)
+const HomePage = () => {
+    // throw new Error('hola');
+    return (
+        <HomePageContainer>
+            <Directory />
+        </HomePageContainer>
+    )
+}
 
 export default HomePage;

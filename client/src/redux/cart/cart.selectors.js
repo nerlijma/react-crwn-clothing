@@ -26,3 +26,9 @@ export const selectCartTotal = createSelector(
         return cartItems ? cartItems.reduce((acc, cartItem) => acc + (cartItem.quantity * cartItem.price), 0) : 0
     }
 );
+
+// Used when adding, removing or clearing cart items. Returns the array of items that are loading
+export const selectLoading = createSelector(
+    [selectCart],
+    (cart) => cart.loading
+);

@@ -1,11 +1,20 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const SpinnerOverlay = styled.div`
-  height: 60vh;
+const SpinnerOverlayCommon = css`
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+`
+
+export const SpinnerOverlayFull = styled.div`
+  height: 60vh;
+  ${SpinnerOverlayCommon}
+`;
+
+export const SpinnerOverlay = styled.div`
+  height: 350px;
+  ${SpinnerOverlayCommon}
 `;
 
 export const SpinnerContainer = styled.div`

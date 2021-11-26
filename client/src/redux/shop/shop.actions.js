@@ -15,6 +15,8 @@ export const fetchCollectionsFailure = (errorMessage) => ({
     payload: errorMessage
 });
 
+
+// No used anymore with sagas
 export const fetchCollectionsStartAsync = () => {
     return dispatch => {
         dispatch(fetchCollectionsStart());
